@@ -16,7 +16,7 @@
         </style>
     </head>
     <body>
-        <p>{{$str}}</p>
+        <p>haha</p>
 
     </body>
 </html>

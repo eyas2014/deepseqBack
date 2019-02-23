@@ -12,3 +12,9 @@
 */
 
 Route::get('/api/chart/{zoom?}/{start?}', "ApiController@api");
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
