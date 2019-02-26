@@ -8,6 +8,6 @@ class Reads extends Model
 {
     protected $table="genome_reads";
     public $timestamps = false;
-    protected $fillable = ['sample_id', "position","genome_reads"];
+    protected $fillable = ['sample_id', "genome_position","genome_reads"];
 
 }

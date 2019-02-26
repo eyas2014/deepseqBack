@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'default' => 'postgres',
+    'default' => 'mysql',
 
     /*
     |--------------------------------------------------------------------------
@@ -53,6 +53,12 @@ return [
             'prefix' => '',
             'prefix_indexes' => true,
             'strict' => true,
+            'modes' => ['STRICT_TRANS_TABLES',
+                        'NO_ZERO_IN_DATE',
+                        'NO_ZERO_DATE',
+                        'ERROR_FOR_DIVISION_BY_ZERO',
+                        'NO_AUTO_CREATE_USER',
+                        'NO_ENGINE_SUBSTITUTION'],
             'engine' => null,
         ],
 
@@ -70,16 +76,27 @@ return [
             'sslmode' => 'prefer',
         ],
 
-        'sqlsrv' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_HOST', 'localhost'),
-            'port' => env('DB_PORT', '1433'),
-            'database' => env('DB_DATABASE', 'forge'),
-            'username' => env('DB_USERNAME', 'forge'),
-            'password' => env('DB_PASSWORD', ''),
-            'charset' => 'utf8',
+        'webhost' => [
+            'driver' => 'mysql',
+            'host' => 'localhost',
+            'port' => '3306',
+            'database' => 'id8817825_deepseqview',
+            'username' => 'id8817825_root',
+            'password' => 'sym123456',
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',
             'prefix_indexes' => true,
+            'strict' => true,
+            'options'   => [PDO::ATTR_EMULATE_PREPARES => true,],
+            'modes' => ['STRICT_TRANS_TABLES',
+                        'NO_ZERO_IN_DATE',
+                        'NO_ZERO_DATE',
+                        'ERROR_FOR_DIVISION_BY_ZERO',
+                        'NO_AUTO_CREATE_USER',
+                        'NO_ENGINE_SUBSTITUTION'],
+            'engine' => null,
         ],
 
     ],

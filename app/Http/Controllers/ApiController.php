@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Reads;
+use Illuminate\Support\Facades\DB;
 
 class ApiController extends Controller
 {
@@ -30,40 +30,33 @@ class ApiController extends Controller
 
     public function api($zoom=0, $start=0){
 
-        return $zoom."#".$start;
-
         $genome_size=4641000;
-
         $zoom_level=$zoom;
         $column_width=6**(5-$zoom_level);
         $start=$start;
         $end=$start+$column_width*1500;
         $NO_sample=2;
+        $offset=floor($start/$column_width);
 
-        $list=array();
+        for($i=0; $i<$NO_sample; $i++){
+            $results[$i]=DB::connection('mysql')->select('select floor(genome_position/?) as genome_position, max(genome_reads) as genome_reads from genome_reads where genome_position>=? and genome_position<? and sample_id=? group by floor(genome_position/?)', [$column_width, $start, $end, $i+1, $column_width]);
+        }
 
-        Reads::where("position", "<", $end)
-                    ->where("position", ">=", $start)
-                    ->chunk(30000, function($results) use($start, $column_width, &$list){
-                        foreach($results as $record){
-                            $index=floor(($record->position-$start)/$column_width);
-                            $sample_id=$record->sample_id-1;
-                            if(!isset($list[$index]))$list[$index]=[0,0];
-                            if(!isset($list[$index][$sample_id]))$list[$index][$sample_id]=0;
-                            $list[$index][$sample_id]=max($record->genome_reads,$list[$index][$sample_id]);
-                        }
-                    });
+        if($genome_size>=$end){
+            $chart=array_fill(0, 6, array_fill(0, 250, array_fill(0,$NO_sample,0)));
+        }
+        else {
+            $total_columns=floor(($genome_size-$start+1)/$column_width);
+            $total_panels=ceil($total_columns/250);
+            $chart=array_fill(0, $total_panels, array_fill(0, 250, array_fill(0,$NO_sample,0)));
+        }
 
-        if($genome_size>=$end)$total_columns=1500;
-        else $total_columns=floor(($genome_size-$start)/$column_width)+1;
-
-        for($i=0; $i<$total_columns; $i++){
-            $panel=floor($i/250);
-            $column=$i%250;
-            for($j=0; $j<$NO_sample; $j++) {
-                if(!isset($list[$i][$j]))$list[$i][$j]=0;
+        for($i=0; $i<$NO_sample; $i++) {
+            foreach($results[$i] as $result){
+                $panel=floor(($result->genome_position-$offset)/250);
+                $column=($result->genome_position-$offset)%250;
+                $chart[$panel][$column][$i]=$result->genome_reads;
             }
-            $chart[$panel][$column]=$list[$i];
         }
 
         return $chart;
