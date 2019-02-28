@@ -12,5 +12,10 @@
     </head>
 <body>
   <app-root></app-root>
-<script type="text/javascript" src="runtime.js"></script><script type="text/javascript" src="polyfills.js"></script><script type="text/javascript" src="styles.js"></script><script type="text/javascript" src="vendor.js"></script><script type="text/javascript" src="main.js"></script></body>
+    <script type="text/javascript" src="js/runtime.js"></script>
+    <script type="text/javascript" src="js/polyfills.js"></script>
+    <script type="text/javascript" src="js/styles.js"></script>
+    <script type="text/javascript" src="js/vendor.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+</body>
 </html>

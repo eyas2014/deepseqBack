@@ -11,7 +11,9 @@
 |
 */
 
-Route::get('/api/chart/{zoom?}/{start?}', "ApiController@api");
+Route::get('/api/chart/{zoom?}/{start?}', "ApiController@chart");
+
+Route::get('/api/shift/{zoom?}/{start?}', "ApiController@shift");
 
 
 Route::get('/', function () {
